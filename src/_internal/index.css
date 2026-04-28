@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: 203 100% 29%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+  }
+
+  html { font-size: 16px; }
+  @media (min-width: 1024px) { html { font-size: 18px; } }
+
+  body { font-family: "Lato", sans-serif; }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Patua One", serif;
+    color: hsl(var(--primary));
+  }
+}
