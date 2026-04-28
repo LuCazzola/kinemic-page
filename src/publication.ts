@@ -12,7 +12,6 @@
 import type { Publication } from "@/_internal/types";
 
 // Shorthand: resolves a path relative to the deployed site root.
-// Usage:  a("/media/my-image.png")  →  "assets/media/my-image.png"  (or the correct base path in production)
 const a = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, "")}/assets${path}`;
 
 const publication: Publication = {
@@ -21,58 +20,73 @@ const publication: Publication = {
 
   // Each author is [displayName, optionalProfileURL]
   authors: [
-    ["A. Author",   "https://scholar.google.com/"],
+    ["A. Author",  "https://scholar.google.com/"],
     ["B. Coauthor"],   // no link → just plain text
   ],
 
   // ── venue & year ──────────────────────────────────────────────────────────
-  venue: "(CONF) Full Conference Name",   // shown in the top bar and under the title
+  venue: "(CONF) Full Conference Name",
   year:  "2025",
 
   // ── optional text ─────────────────────────────────────────────────────────
-  affiliations: "University X; Institute Y",   // shown below authors
+  affiliations: "University X; Institute Y",
 
   abstract: `Your abstract text goes here. It will be shown in a grey box
 below the buttons. You can write multiple sentences — just keep it as
 a plain string (no markdown here).`,
 
-  // ── links (remove or set to undefined to show a "coming soon" button) ─────
-  arxiv:        "https://arxiv.org/abs/XXXX.XXXXX",
-  pdf:          a("/resources/your-paper.pdf"),          // or an external URL
-  code:         undefined,                               // "https://github.com/..."
-  supplementary: a("/resources/your-supplementary.zip"),
+  // ── links (remove or set to undefined to show a greyed-out button) ────────
+  arxiv:         "https://arxiv.org/abs/XXXX.XXXXX",
+  pdf:           undefined,
+  code:          undefined,
+  supplementary: undefined,
 
-  // ── back-link ─────────────────────────────────────────────────────────────
+  // ── back-link shown top-left ───────────────────────────────────────────────
   siteUrl: "https://your-portfolio.github.io/",
 
-  // ── main teaser image (shown below buttons when there is no content.md) ───
-  image: a("/media/your-teaser-image.png"),
-
-  // ── media list (1-based in content.md, 0-based internally) ────────────────
-  // These are referenced in content.md using [MEDIA:N] tokens.
-  // Supported types: "image" | "video" | "embed"
+  // ── media list — referenced in content.md by 1-based index ────────────────
   media: [
-    // Example image
+    // 1 — single image example
     {
-      type: "image",
-      src:  a("/media/figure1.png"),
-      title:   "Figure 1",
-      caption: "A description of Figure 1.",
+      type:    "image",
+      src:     a("/media/demo/figure1.jpg"),
+      title:   "Neural Architecture Overview",
+      caption: "High-level diagram of the proposed architecture.",
     },
-
-    // Example video (autoplay, muted, looping)
+    // 2 — second image (used in side-by-side)
+    {
+      type:    "image",
+      src:     a("/media/demo/figure2.jpg"),
+      title:   "Experimental Setup",
+      caption: "The physical setup used during data collection.",
+    },
+    // 3 — third image (carousel)
+    {
+      type:    "image",
+      src:     a("/media/demo/figure3.jpg"),
+      title:   "Quantitative Results",
+      caption: "Performance curves across all benchmarks.",
+    },
+    // 4 — fourth image (carousel)
+    {
+      type:    "image",
+      src:     a("/media/demo/figure4.jpg"),
+      title:   "Ablation Study",
+      caption: "Component-wise contribution to final accuracy.",
+    },
+    // 5 — first video
     {
       type:    "video",
-      src:     a("/media/demo.mp4"),
-      title:   "Demo video",
-      caption: "A short description of the demo.",
+      src:     a("/media/demo/demo_video1.mp4"),
+      title:   "Method Demo",
+      caption: "The model running in real time on a held-out test sequence.",
     },
-
-    // Example YouTube embed
+    // 6 — second video (used in side-by-side comparison)
     {
-      type:    "embed",
-      src:     "https://www.youtube.com/embed/VIDEO_ID",
-      caption: "Optional caption.",
+      type:    "video",
+      src:     a("/media/demo/demo_video2.mp4"),
+      title:   "Baseline Comparison",
+      caption: "The previous state-of-the-art on the same input.",
     },
   ],
 };

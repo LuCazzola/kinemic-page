@@ -1,44 +1,79 @@
 <!--
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  content.md  —  YOUR PAPER'S BODY                                           │
-│                                                                             │
-│  Write normal Markdown here. Between sections you can embed media items     │
-│  from the `media` array in publication.ts using these tokens:               │
-│                                                                             │
-│  [MEDIA:N]                    show item N (1-based) full-width              │
-│  [MEDIA:N:0.7]                show item N at 70% of max width               │
-│  [MEDIA:1-6]                  carousel of items 1 through 6                 │
-│  [MEDIA:1,3,5]                carousel of items 1, 3 and 5                  │
-│  [MEDIA:1-6]{Caption **md**}  carousel with a markdown caption above        │
-│                                                                             │
-│  [MEDIA-SIDE-BY-SIDE:1.0]                                                   │
-│  [MEDIA:1-3]{Left caption}                                                  │
-│  [MEDIA:4-6]{Right caption}                                                 │
-│  [/MEDIA-SIDE-BY-SIDE]        side-by-side columns (scale > 1 = wider)      │
-│                                                                             │
-│  [SPACING:small|medium|large|xlarge]   vertical gap                         │
-└─────────────────────────────────────────────────────────────────────────────┘
+  content.md — paper body
+  Reference media from publication.ts by 1-based index using [MEDIA:N] tokens.
+  See README.md for the full token reference.
 -->
 
-### Section 1
+### Overview
 
-Write your section text here. You can use **bold**, *italic*, `code`,
-[links](https://example.com), math ($E = mc^2$), and all standard GFM features.
+This is a demo of **md-paper** — a Markdown-native template for publishing academic paper pages on GitHub Pages. Everything you see here is written in plain Markdown. No HTML, no JSX.
 
-[MEDIA:1]{**Figure 1.** A caption for your figure goes here.}
+You can use all standard formatting: **bold**, *italic*, `inline code`, [links](https://github.com/LuCazzola/md-paper), math ($E = mc^2$), and tables.
 
-### Section 2
+| Feature | How |
+|---|---|
+| Single figure | `[MEDIA:N]` |
+| Carousel | `[MEDIA:1-4]` |
+| Side-by-side | `[MEDIA-SIDE-BY-SIDE]` block |
+| Math | KaTeX — `$...$` and `$$...$$` |
+| Spacing | `[SPACING:large]` |
 
-Another section. Use a carousel to show multiple related items.
+[SPACING:small]
 
-[MEDIA:1-2]{**Figures 1–2.** These two figures illustrate the same concept from different angles.}
+### Single figure
+
+A single item displayed full-width. The `{...}` after the token renders as a Markdown caption block above the media.
+
+[MEDIA:1]{**Figure 1 — Neural Architecture Overview.** The `[MEDIA:1]` token embeds item 1 from your media list at full width. The text inside `{...}` is rendered as Markdown — **bold**, *italic*, `code`, math ($\alpha, \beta$), all work.}
+
+[SPACING:medium]
+
+### Scaled figure
+
+Add `:0.6` to constrain the item to 60% of the container width — useful for diagrams that don't need the full column.
+
+[MEDIA:2:0.55]{**Figure 2 — Experimental Setup** (shown at 55% width via `[MEDIA:2:0.55]`).}
+
+[SPACING:medium]
+
+### Carousel
+
+List a range or comma-separated indices to get a carousel. The `‹` `›` arrows and dot indicators are generated automatically.
+
+[MEDIA:1-4]{**Figures 1–4.** A carousel produced by `[MEDIA:1-4]`. Use `[MEDIA:1,3]` for non-contiguous picks.}
+
+[SPACING:medium]
+
+### Video
+
+Videos autoplay muted and loop by default — ideal for showing motion or animations.
+
+[MEDIA:5]{**Video 1 — Method Demo.** The `[MEDIA:5]` token embeds a video. Autoplay, muted, looping. Set `audio: true` in `publication.ts` to enable sound.}
+
+[SPACING:medium]
 
 ### Side-by-side comparison
 
-[MEDIA-SIDE-BY-SIDE:1.0]
-[MEDIA:1]{**Baseline.** Description of the baseline method.}
-[MEDIA:2]{**Ours.** Description of your method.}
+The `[MEDIA-SIDE-BY-SIDE]` block places columns next to each other. Columns collapse to a single column on mobile automatically. The scale factor (here `1.1`) lets the block extend slightly beyond the normal content width.
+
+[MEDIA-SIDE-BY-SIDE:1.1]
+[MEDIA:5]{**Ours.** A side-by-side column with a video on the left. Caption text is Markdown — *italic*, **bold**, and $\LaTeX$ all work.}
+[MEDIA:6]{**Baseline.** The right column. Use as many columns as you need — the grid adapts.}
 [/MEDIA-SIDE-BY-SIDE]
+
+[SPACING:medium]
+
+### Math
+
+Full KaTeX support, inline and block:
+
+The loss function is defined as $\mathcal{L} = \mathcal{L}_\text{rec} + \lambda \mathcal{L}_\text{KL}$.
+
+$$
+\mathcal{L}_\text{KL} = -\frac{1}{2} \sum_{j=1}^{J} \left(1 + \log \sigma_j^2 - \mu_j^2 - \sigma_j^2\right)
+$$
+
+[SPACING:large]
 
 ## Cite us
 
