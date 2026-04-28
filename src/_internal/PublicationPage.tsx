@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FileText, Archive, Code, Download } from "lucide-react";
+import { FileText, ExternalLink, Code, Download } from "lucide-react";
 import type { Publication, MediaItem } from "@/_internal/types";
 import RenderAsMarkdown from "@/_internal/lib/RenderAsMarkdown";
 import MediaCarousel from "@/_internal/components/MediaCarousel";
@@ -32,7 +32,7 @@ const VideoEl: React.FC<{ src: string }> = ({ src }) => (
 
 const btn: React.CSSProperties = { display: "inline-flex", alignItems: "center", gap: 8, borderRadius: 6, padding: "8px 12px", fontSize: 14, fontWeight: 500, textDecoration: "none", border: "none", cursor: "pointer" };
 const btnBlue  = { ...btn, background: "#0b69ff", color: "#fff" } as React.CSSProperties;
-const btnRed   = { ...btn, background: "#b31b1b", color: "#fff" } as React.CSSProperties;
+const btnGrey  = { ...btn, background: "#555",    color: "#fff" } as React.CSSProperties;
 const btnBlack = { ...btn, background: "#111",    color: "#fff" } as React.CSSProperties;
 const btnOff   = { ...btn, background: "transparent", color: "#999", border: "1px solid #ddd", opacity: 0.6, cursor: "not-allowed" } as React.CSSProperties;
 
@@ -87,9 +87,9 @@ const PublicationPage: React.FC<{ pub: Publication }> = ({ pub }) => {
                 ? <a href={pub.pdf} download style={btnBlue}><FileText size={16} /><span>Paper (PDF)</span></a>
                 : null}
 
-              {pub.arxiv
-                ? <a href={pub.arxiv} target="_blank" rel="noreferrer" style={btnRed}><Archive size={16} /><span>ArXiv</span></a>
-                : <Tooltip text="Coming soon"><button disabled style={btnOff}><Archive size={16} /><span>ArXiv</span></button></Tooltip>}
+              {pub.paper
+                ? <a href={pub.paper} target="_blank" rel="noreferrer" style={btnGrey}><ExternalLink size={16} /><span>Paper</span></a>
+                : <Tooltip text="Coming soon"><button disabled style={btnOff}><ExternalLink size={16} /><span>Paper</span></button></Tooltip>}
 
               {pub.code
                 ? <a href={pub.code} target="_blank" rel="noreferrer" style={btnBlack}><Code size={16} /><span>Code</span></a>

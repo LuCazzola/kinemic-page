@@ -56,10 +56,10 @@ Videos autoplay muted and loop by default — ideal for showing motion or animat
 
 The `[MEDIA-SIDE-BY-SIDE]` block places columns next to each other. Columns collapse to a single column on mobile automatically. The scale factor (here `1.1`) lets the block extend slightly beyond the normal content width.
 
-[MEDIA-SIDE-BY-SIDE:1.1]
+[MEDIA-MULTICOL:1.1]
 [MEDIA:5]{**Ours.** A side-by-side column with a video on the left. Caption text is Markdown — *italic*, **bold**, and $\LaTeX$ all work.}
 [MEDIA:6]{**Baseline.** The right column. Use as many columns as you need — the grid adapts.}
-[/MEDIA-SIDE-BY-SIDE]
+[/MEDIA-MULTICOL]
 
 [SPACING:medium]
 

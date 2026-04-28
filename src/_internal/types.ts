@@ -16,7 +16,8 @@ export type Publication = {
   venue?: string;
   year?: string;
   pdf?: string;
-  arxiv?: string;
+  /** Link to the paper — arXiv, publisher, or any URL */
+  paper?: string;
   code?: string;
   /** Main teaser image shown below the buttons */
   image?: string;

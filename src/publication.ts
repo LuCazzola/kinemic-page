@@ -36,7 +36,7 @@ below the buttons. You can write multiple sentences — just keep it as
 a plain string (no markdown here).`,
 
   // ── links (remove or set to undefined to show a greyed-out button) ────────
-  arxiv:         "https://arxiv.org/abs/XXXX.XXXXX",
+  paper:         "https://arxiv.org/abs/XXXX.XXXXX",   // arXiv, publisher, or any URL
   pdf:           undefined,
   code:          undefined,
   supplementary: undefined,

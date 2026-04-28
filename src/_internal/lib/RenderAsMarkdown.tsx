@@ -7,10 +7,10 @@
  *   [MEDIA:1,3,5]                   carousel of items 1, 3, 5
  *   [MEDIA:1-6]{Caption **text**}   carousel with a markdown caption block above
  *
- *   [MEDIA-SIDE-BY-SIDE:1.2]
+ *   [MEDIA-MULTICOL:1.2]
  *   [MEDIA:1-3]{Left caption}
  *   [MEDIA:4-6]{Right caption}
- *   [/MEDIA-SIDE-BY-SIDE]           two-column layout (scale > 1 = wider than container)
+ *   [/MEDIA-MULTICOL]               multi-column layout (scale > 1 = wider than container)
  *
  *   [SPACING:small|medium|large|xlarge]   vertical gap
  */
@@ -28,7 +28,7 @@ import type { MediaItem } from "@/_internal/types";
 type Part =
   | { kind: "text"; text: string }
   | { kind: "media"; indices: (number | "placeholder")[]; scale?: number; caption?: string }
-  | { kind: "sbs"; scale: number; cols: { indices: (number | "placeholder")[]; caption?: string }[] }
+  | { kind: "multicol"; scale: number; cols: { indices: (number | "placeholder")[]; caption?: string }[] }
   | { kind: "space"; size: string };
 
 function parseIndices(raw: string): (number | "placeholder")[] {
@@ -55,24 +55,25 @@ export default function RenderAsMarkdown(content: string, media: MediaItem[] = [
   const rhPlugins = opts?.math ? [(rehypeKatex as any), (rehypeRaw as any)] : [];
 
   // ── parse ──────────────────────────────────────────────────────────────────
-  const sbsMap = new Map<string, { scale: number; cols: { indices: (number | "placeholder")[]; caption?: string }[] }>();
-  const processed = content.replace(/\[MEDIA-SIDE-BY-SIDE:([0-9.]+)\]([\s\S]*?)\[\/MEDIA-SIDE-BY-SIDE\]/gi, (_, scale, block) => {
+  const multicolMap = new Map<string, { scale: number; cols: { indices: (number | "placeholder")[]; caption?: string }[] }>();
+  const processed = content.replace(/\[MEDIA-MULTICOL:([0-9.]+)\]([\s\S]*?)\[\/MEDIA-MULTICOL\]/gi, (_, scale, block) => {
     const cols: { indices: (number | "placeholder")[]; caption?: string }[] = [];
     let m: RegExpExecArray | null;
-    const re = /\[MEDIA:([0-9?\-\s,]+)\](?:\{([^}]+)\})?/gi;
-    while ((m = re.exec(block)) !== null) cols.push({ indices: parseIndices(m[1]), caption: m[2] });
-    const id = `__SBS_${sbsMap.size}__`;
-    sbsMap.set(id, { scale: parseFloat(scale), cols });
+    // Trim surrounding whitespace/newlines from each column token before matching
+    const re = /\[MEDIA:([0-9?\-\s,]+)\](?:\{([^}]*)\})?/gi;
+    while ((m = re.exec(block)) !== null) cols.push({ indices: parseIndices(m[1]), caption: m[2]?.trim() });
+    const id = `__MC_${multicolMap.size}__`;
+    multicolMap.set(id, { scale: parseFloat(scale), cols });
     return id;
   });
 
   const parts: Part[] = [];
-  const re = /\[MEDIA:([0-9?\-\s,]+)(?::([0-9.]+))?\](?:\{([^}]+)\})?|\[SPACING:(small|medium|large|xlarge)\]|(__SBS_\d+__)/gi;
+  const re = /\[MEDIA:([0-9?\-\s,]+)(?::([0-9.]+))?\](?:\{([^}]*)\})?|\[SPACING:(small|medium|large|xlarge)\]|(__MC_\d+__)/gi;
   let last = 0, m: RegExpExecArray | null;
   while ((m = re.exec(processed)) !== null) {
     if (m.index > last) parts.push({ kind: "text", text: processed.slice(last, m.index) });
-    if (m[5]) { const d = sbsMap.get(m[5]); if (d) parts.push({ kind: "sbs", ...d }); }
-    else if (m[1]) parts.push({ kind: "media", indices: parseIndices(m[1]), scale: m[2] ? parseFloat(m[2]) : undefined, caption: m[3] });
+    if (m[5]) { const d = multicolMap.get(m[5]); if (d) parts.push({ kind: "multicol", ...d }); }
+    else if (m[1]) parts.push({ kind: "media", indices: parseIndices(m[1]), scale: m[2] ? parseFloat(m[2]) : undefined, caption: m[3]?.trim() });
     else if (m[4]) parts.push({ kind: "space", size: m[4] });
     last = re.lastIndex;
   }
@@ -135,8 +136,8 @@ export default function RenderAsMarkdown(content: string, media: MediaItem[] = [
           return fullBleed(inner, i, "#fff", max);
         }
 
-        if (p.kind === "sbs") {
-          const cid = `sbs-${i}`;
+        if (p.kind === "multicol") {
+          const cid = `mc-${i}`;
           const max = Math.round(1200 * Math.max(0.05, p.scale));
           return (
             <React.Fragment key={i}>
