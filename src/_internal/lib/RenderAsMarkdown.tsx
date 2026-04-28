@@ -89,8 +89,16 @@ export default function RenderAsMarkdown(content: string, media: MediaItem[] = [
   }
   if (last < processed.length) parts.push({ kind: "text", text: processed.slice(last) });
 
-  // Restore protected code spans in text parts
-  for (const p of parts) { if (p.kind === "text") p.text = restore(p.text); }
+  // Restore protected code spans in all string fields
+  for (const p of parts) {
+    if (p.kind === "text") {
+      p.text = restore(p.text);
+    } else if (p.kind === "media" && p.caption) {
+      p.caption = restore(p.caption);
+    } else if (p.kind === "multicol") {
+      for (const col of p.cols) { if (col.caption) col.caption = restore(col.caption); }
+    }
+  }
 
   // ── helpers ────────────────────────────────────────────────────────────────
   const resolve = (idx: number | "placeholder"): MediaItem | null =>
