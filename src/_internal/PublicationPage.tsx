@@ -4,11 +4,7 @@ import type { Publication, MediaItem } from "@/_internal/types";
 import RenderAsMarkdown from "@/_internal/lib/RenderAsMarkdown";
 import MediaCarousel from "@/_internal/components/MediaCarousel";
 import ThreeBallSeparator from "@/_internal/components/ThreeBallSeparator";
-
-// ─── small helpers ────────────────────────────────────────────────────────────
-
-const mimeFor = (src?: string) => { const e = src?.split("?")[0].split(".").pop()?.toLowerCase(); return e === "mp4" ? "video/mp4" : e === "webm" ? "video/webm" : e === "ogv" || e === "ogg" ? "video/ogg" : undefined; };
-const videoSources = (s?: string) => { if (!s) return [] as string[]; const [p, q] = s.split("?"); const e = p.split(".").pop()?.toLowerCase() ?? ""; const b = p.replace(/\.[^.]+$/, ""); const qs = q ? `?${q}` : ""; const c = [s]; if (e === "mp4") c.push(`${b}.webm${qs}`); else if (e === "webm") c.push(`${b}.mp4${qs}`); else { c.push(`${b}.mp4${qs}`); c.push(`${b}.webm${qs}`); } return [...new Set(c)]; };
+import { mimeFor, videoSources } from "@/_internal/lib/videoUtils";
 
 const Tooltip: React.FC<{ text: string; children: React.ReactNode }> = ({ text, children }) => {
   const [show, setShow] = useState(false);

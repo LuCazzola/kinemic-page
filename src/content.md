@@ -1,85 +1,54 @@
-<!--
-  content.md — paper body
-  Reference media from publication.ts by 1-based index using `[MEDIA:N]` tokens.
-  See README.md for the full token reference.
--->
+## 🔍 Kinetic Mining in Context
 
-# Overview
+KineMIC addresses data scarcity through a two-stage mining strategy:
 
-This is a demo of **md-paper** — a Markdown-native template for publishing academic paper pages on GitHub Pages. Everything you see here is written in plain Markdown. No HTML, no JSX.
+1. **Soft Positive Search**: CLIP text embeddings match sparse HAR labels to HumanML3D captions, identifying candidate motions.
 
-You can use all standard formatting: **bold**, *italic*, `inline code`, [links](https://github.com/LuCazzola/md-paper), math ($E = mc^2$), and tables.
+2. **Mining in Context (MIC)**: Contrastive learning aligns and extracts kinematically relevant sub-windows from long source motions to match short NTU actions, bridging the domain gap.
 
-| Feature | How |
-|---|---|
-| Single figure | `[MEDIA:N]` or `[MEDIA:alias]` |
-| Carousel | `[MEDIA:1-4]` |
-| Multi-column | `[MEDIA-MULTICOL]` block |
-| Math | KaTeX — `$...$` and `$$...$$` |
-| Spacing | `[SPACING:large]` |
-
-### Single figure
-
-A single item displayed full-width. The `{...}` after the token renders as a Markdown caption block above the media. You can reference by index **or** by the optional `id` alias set in `publication.ts`.
-
-[MEDIA:architecture]{**Figure 1 — Neural Architecture Overview.** Embedded via `[MEDIA:architecture]` (alias) — equivalent to `[MEDIA:1]` (index). The text inside `{...}` is rendered as Markdown — **bold**, *italic*, `code`, math ($\alpha, \beta$), all work.}
+[MEDIA:2,3,4,5,6,7:0.8]{**Visualizing the Kinetic Mining.** Our Mining in Context (MIC) module, trained through contrastive learning, is able to identify the most kinematically relevant motion segment (orange) from the general source motion (S) with respect to the target action (T).}
 
 [SPACING:medium]
 
-### Scaled figure
+## 🤸 Few-Shot Action Synthesis
 
-Add `:0.6` to constrain the item to 60% of the container width — useful for diagrams that don't need the full column.
+KineMIC distills T2M priors from HumanML3D into a task-specific [Motion Diffusion Model](https://guytevet.github.io/mdm-page/) via few-shot fine-tuning. This generates kinematically precise synthetic motions that augment sparse support sets for robust HAR training, while preserving motion diversity.
 
-[MEDIA:2:0.55]{**Figure 2 — Experimental Setup** (shown at 55% width via `[MEDIA:2:0.55]`).}
+[MEDIA:8,9,10,11,12,13,14,15,16:0.7]{**Real Motion Samples.** The model is trained with few-shots (10) of real NTU RGB+D 120 motion samples per action class.}
 
-[SPACING:medium]
-
-### Carousel
-
-List a range or comma-separated indices to get a carousel. The `‹` `›` arrows and dot indicators are generated automatically.
-
-[MEDIA:1-4]{**Figures 1–4.** A carousel produced by `[MEDIA:1-4]`. Use `[MEDIA:1,3]` for non-contiguous picks.}
+[MEDIA:17,18,19,20,21,22,23,24,25,26,27,28,29,30,31:0.7]{**Generated Motion Samples.** Diverse actions synthesized by the KineMIC model.}
 
 [SPACING:medium]
 
-### Video
+## 🎭 Motion Composition
 
-Videos autoplay muted and loop by default — ideal for showing motion or animations.
+An emergent property is the model's ability to perform motion composition. While the model is trained with aligned action labels and text captions, by combining learned action labels with novel text prompts at inference the model preserves its pre-training knowledge while adhering to target domain constraints.
 
-[MEDIA:5]{**Video 1 — Method Demo.** The `[MEDIA:5]` token embeds a video. Autoplay, muted, looping. Set `audio: true` in `publication.ts` to enable sound.}
+[MEDIA:32,33,34:0.8]{**Prompt composition.** Action and text conditioning are set to be 'unrelated' at inference. The model tries to satisfy both conditionings, resulting in blending of characteristics.}
 
 [SPACING:medium]
 
-### Multi-Column support
+## 👀 Pre-trained MDM vs. KineMIC
 
-The `[MEDIA-MULTICOL]` block places columns next to each other. Columns collapse to a single column on mobile automatically. The scale factor (here `1.1`) lets the block extend slightly beyond the normal content width.
+KineMIC significantly improves motion relatedness to the target domain compared to the base pre-trained model. While pre-trained MDM often struggles to adhere to expected high-level kinematics—even for seemingly simple actions—KineMIC facilitates a crucial specialization process that bridges the domain gap.
 
-[MEDIA-MULTICOL:1.1]
-[MEDIA:5]{**Ours.** A side-by-side column with a video on the left. Caption text is Markdown — *italic*, **bold**, and $\LaTeX$ all work.}
-[MEDIA:6]{**Baseline.** The right column. Use as many columns as you need — the grid adapts.}
+[MEDIA-MULTICOL:1.35]
+[MEDIA:35,36,37,38,39,40]{**Pre-Trained MDM.** While the generalist MDM can generate motion from text, it lacks domain-specific guidance, leading to frequent **artifacts**. Most noticeably, *'side kicks'* are often **truncated** mid-animation, substituted with front kicks, or some other form of **chaotic kicking** motion. Action *'stretch on self'* instead **exhibits excessive, sometimes erratic variety**, diverging from target kinematic distribution.}
+[MEDIA:41,42,43,44,45,46]{**KineMIC.** Generated samples stay **more faithful** to high level kinematics of the few-shot target set. By localizing variety to the necessary motion windows, KineMIC produces **more stable and representative samples** — a critical factor for training reliable HAR classifiers.}
 [/MEDIA-MULTICOL]
-
-[SPACING:medium]
-
-### Math
-
-Full KaTeX support, inline and block:
-
-The loss function is defined as $\mathcal{L} = \mathcal{L}_\text{rec} + \lambda \mathcal{L}_\text{KL}$.
-
-$$
-\mathcal{L}_\text{KL} = -\frac{1}{2} \sum_{j=1}^{J} \left(1 + \log \sigma_j^2 - \mu_j^2 - \sigma_j^2\right)
-$$
 
 [SPACING:large]
 
-## Cite us
+## 💜 Cite us
 
 ```bibtex
-@article{author2025yourpaper,
-  title   = {Your Paper Title},
-  author  = {Author, A. and Coauthor, B.},
-  journal = {arXiv preprint arXiv:XXXX.XXXXX},
-  year    = {2025},
+@misc{cazzola2025kineticminingcontextfewshot,
+      title={Kinetic Mining in Context: Few-Shot Action Synthesis via Text-to-Motion Distillation},
+      author={Luca Cazzola and Ahed Alboody},
+      year={2025},
+      eprint={2512.11654},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2512.11654},
 }
 ```
