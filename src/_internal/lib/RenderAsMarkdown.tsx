@@ -31,13 +31,17 @@ type Part =
   | { kind: "multicol"; scale: number; cols: { indices: (number | "placeholder")[]; caption?: string }[] }
   | { kind: "space"; size: string };
 
-function parseIndices(raw: string): (number | "placeholder")[] {
+function parseIndices(raw: string, aliases: Map<string, number> = new Map()): (number | "placeholder")[] {
   const out: (number | "placeholder")[] = [];
   for (const t of raw.split(/[,\s]+/).filter(Boolean)) {
     if (t === "?") { out.push("placeholder"); continue; }
-    if (t.includes("-")) {
-      const [a, b] = t.split("-").map((s) => parseInt(s.trim(), 10));
-      if (!isNaN(a) && !isNaN(b)) { for (let k = Math.min(a, b); k <= Math.max(a, b); k++) out.push(k - 1); continue; }
+    // Alias lookup (non-numeric token)
+    if (aliases.has(t)) { out.push(aliases.get(t)!); continue; }
+    // Numeric range e.g. 2-5 — only when both sides are digits
+    if (/^\d+-\d+$/.test(t)) {
+      const [a, b] = t.split("-").map(Number);
+      for (let k = Math.min(a, b); k <= Math.max(a, b); k++) out.push(k - 1);
+      continue;
     }
     const n = parseInt(t, 10);
     if (!isNaN(n)) out.push(n - 1);
@@ -65,25 +69,28 @@ export default function RenderAsMarkdown(content: string, media: MediaItem[] = [
 
   const safeContent = protect(content);
 
+  // Build alias → 0-based index map from media ids
+  const aliases = new Map<string, number>();
+  media.forEach((m, i) => { if (m.id) aliases.set(m.id, i); });
+
   const multicolMap = new Map<string, { scale: number; cols: { indices: (number | "placeholder")[]; caption?: string }[] }>();
   const processed = safeContent.replace(/\[MEDIA-MULTICOL:([0-9.]+)\]([\s\S]*?)\[\/MEDIA-MULTICOL\]/gi, (_, scale, block) => {
     const cols: { indices: (number | "placeholder")[]; caption?: string }[] = [];
     let m: RegExpExecArray | null;
-    // Trim surrounding whitespace/newlines from each column token before matching
-    const re = /\[MEDIA:([0-9?\-\s,]+)\](?:\{([^}]*)\})?/gi;
-    while ((m = re.exec(block)) !== null) cols.push({ indices: parseIndices(m[1]), caption: m[2]?.trim() });
+    const re = /\[MEDIA:([\w?.,\s-]+)\](?:\{([^}]*)\})?/gi;
+    while ((m = re.exec(block)) !== null) cols.push({ indices: parseIndices(m[1], aliases), caption: m[2]?.trim() });
     const id = `__MC_${multicolMap.size}__`;
     multicolMap.set(id, { scale: parseFloat(scale), cols });
     return id;
   });
 
   const parts: Part[] = [];
-  const re = /\[MEDIA:([0-9?\-\s,]+)(?::([0-9.]+))?\](?:\{([^}]*)\})?|\[SPACING:(small|medium|large|xlarge)\]|(__MC_\d+__)/gi;
+  const re = /\[MEDIA:([\w?.,\s-]+?)(?::([0-9.]+))?\](?:\{([^}]*)\})?|\[SPACING:(small|medium|large|xlarge)\]|(__MC_\d+__)/gi;
   let last = 0, m: RegExpExecArray | null;
   while ((m = re.exec(processed)) !== null) {
     if (m.index > last) parts.push({ kind: "text", text: processed.slice(last, m.index) });
     if (m[5]) { const d = multicolMap.get(m[5]); if (d) parts.push({ kind: "multicol", ...d }); }
-    else if (m[1]) parts.push({ kind: "media", indices: parseIndices(m[1]), scale: m[2] ? parseFloat(m[2]) : undefined, caption: m[3]?.trim() });
+    else if (m[1]) parts.push({ kind: "media", indices: parseIndices(m[1], aliases), scale: m[2] ? parseFloat(m[2]) : undefined, caption: m[3]?.trim() });
     else if (m[4]) parts.push({ kind: "space", size: m[4] });
     last = re.lastIndex;
   }

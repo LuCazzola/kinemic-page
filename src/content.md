@@ -12,7 +12,7 @@ You can use all standard formatting: **bold**, *italic*, `inline code`, [links](
 
 | Feature | How |
 |---|---|
-| Single figure | `[MEDIA:N]` |
+| Single figure | `[MEDIA:N]` or `[MEDIA:alias]` |
 | Carousel | `[MEDIA:1-4]` |
 | Multi-column | `[MEDIA-MULTICOL]` block |
 | Math | KaTeX — `$...$` and `$$...$$` |
@@ -20,9 +20,9 @@ You can use all standard formatting: **bold**, *italic*, `inline code`, [links](
 
 ### Single figure
 
-A single item displayed full-width. The `{...}` after the token renders as a Markdown caption block above the media.
+A single item displayed full-width. The `{...}` after the token renders as a Markdown caption block above the media. You can reference by index **or** by the optional `id` alias set in `publication.ts`.
 
-[MEDIA:1]{**Figure 1 — Neural Architecture Overview.** The `MEDIA:1` token embeds item 1 from your media list at full width. The text inside `{...}` is rendered as Markdown — **bold**, *italic*, `code`, math ($\alpha, \beta$), all work.}
+[MEDIA:architecture]{**Figure 1 — Neural Architecture Overview.** Embedded via `[MEDIA:architecture]` (alias) — equivalent to `[MEDIA:1]` (index). The text inside `{...}` is rendered as Markdown — **bold**, *italic*, `code`, math ($\alpha, \beta$), all work.}
 
 [SPACING:medium]
 

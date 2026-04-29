@@ -71,6 +71,7 @@ const publication: Publication = {
     {
       type:    "image",
       src:     "/media/demo/figure1.jpg",
+      id:      "architecture",           // optional alias — use as [MEDIA:architecture]
       title:   "Neural Architecture Overview",
       caption: "High-level diagram of the proposed architecture.",
     },

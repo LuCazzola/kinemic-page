@@ -38,6 +38,8 @@ export type MediaItem = {
   caption?: string;
   title?: string;
   poster?: string;
+  /** Optional alias — use as [MEDIA:alias] in content.md */
+  id?: string;
   /** set true to allow audio on videos (default: muted autoplay) */
   audio?: boolean;
 };
