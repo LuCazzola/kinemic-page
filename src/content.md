@@ -1,10 +1,10 @@
 <!--
   content.md — paper body
-  Reference media from publication.ts by 1-based index using [MEDIA:N] tokens.
+  Reference media from publication.ts by 1-based index using `[MEDIA:N]` tokens.
   See README.md for the full token reference.
 -->
 
-### Overview
+# Overview
 
 This is a demo of **md-paper** — a Markdown-native template for publishing academic paper pages on GitHub Pages. Everything you see here is written in plain Markdown. No HTML, no JSX.
 

@@ -26,7 +26,7 @@ const theme: Theme = {
   abstractFontSize:16,          // abstract body text in px
   contentFontSize: 16,          // markdown body text in px
   mediaTitleFontSize:  18,      // media item title font size in px
-  mediaCaptionFontSize:13,      // media item caption font size in px
+  mediaCaptionFontSize:18,      // media item caption font size in px
   contentMaxWidth: 1200,        // max column width in px
   bodyFont:        "Lato, sans-serif",
   headingFont:     '"Patua One", serif',
@@ -70,7 +70,7 @@ const publication: Publication = {
     // 1 — single image example
     {
       type:    "image",
-      src:     "/media/demo/figure1.jpg",
+      src:     "/media/demo/figure1.png",
       id:      "architecture",           // optional alias — use as [MEDIA:architecture]
       title:   "Neural Architecture Overview",
       caption: "High-level diagram of the proposed architecture.",
@@ -78,21 +78,21 @@ const publication: Publication = {
     // 2 — second image (used in side-by-side)
     {
       type:    "image",
-      src:     "/media/demo/figure2.jpg",
+      src:     "/media/demo/figure2.png",
       title:   "Experimental Setup",
       caption: "The physical setup used during data collection.",
     },
     // 3 — third image (carousel)
     {
       type:    "image",
-      src:     "/media/demo/figure3.jpg",
+      src:     "/media/demo/figure3.png",
       title:   "Quantitative Results",
       caption: "Performance curves across all benchmarks.",
     },
     // 4 — fourth image (carousel)
     {
       type:    "image",
-      src:     "/media/demo/figure4.jpg",
+      src:     "/media/demo/figure4.png",
       title:   "Ablation Study",
       caption: "Component-wise contribution to final accuracy.",
     },
