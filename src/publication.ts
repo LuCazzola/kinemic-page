@@ -43,7 +43,7 @@ const publication: Publication = {
   ],
 
   // ── venue & year ──────────────────────────────────────────────────────────
-  venue: "(CONF) Full Conference Name",
+  venue: undefined, // "CVPR 2025", "NeurIPS 2025", "Science Robotics", etc. (or undefined to hide)
   year:  "2025",
 
   // ── optional text ─────────────────────────────────────────────────────────
@@ -51,10 +51,13 @@ const publication: Publication = {
   teaserIndex: 6,   // 1-based index into media[] to show below the buttons
   abstract: `Your abstract text goes here. It will be shown in a grey box below the buttons. You can write multiple sentences — just keep it as a plain string (no markdown here).`,
 
-  // ── links (remove or set to undefined to show a greyed-out button) ────────
-  paper:         "https://arxiv.org/abs/XXXX.XXXXX",   // arXiv, publisher, or any URL
+  // ── links ─────────────────────────────────────────────────────────────────
+  //   "https://..."   → active button with link
+  //   "placeholder"   → greyed-out "Coming soon" button
+  //   undefined       → button hidden entirely
+  paper:         "https://arxiv.org/abs/XXXX.XXXXX",
   pdf:           undefined,
-  code:          undefined,
+  code:          "placeholder",
   supplementary: undefined,
 
   // ── back-link shown top-left ───────────────────────────────────────────────

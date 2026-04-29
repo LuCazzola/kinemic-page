@@ -116,23 +116,27 @@ const PublicationPage: React.FC<{ pub: Publication }> = ({ pub }) => {
               {pub.venue && pub.venue !== "?" ? <>{pub.venue} • {pub.year}</> : pub.year}
             </div>
 
-            {/* buttons */}
+            {/* buttons — undefined = hidden, "placeholder" = coming soon, URL = active */}
             <div style={{ marginTop: 16, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-              {pub.pdf
-                ? <a href={pub.pdf} download className={btnBlue}><FileText size={16} /><span>Paper (PDF)</span></a>
-                : null}
+              {pub.pdf === undefined ? null
+                : pub.pdf === "placeholder"
+                  ? <Tooltip text="Coming soon"><button disabled className={btnOff}><FileText size={16} /><span>Paper (PDF)</span></button></Tooltip>
+                  : <a href={pub.pdf} download className={btnBlue}><FileText size={16} /><span>Paper (PDF)</span></a>}
 
-              {pub.paper
-                ? <a href={pub.paper} target="_blank" rel="noreferrer" className={btnRed}><ExternalLink size={16} /><span>Paper</span></a>
-                : <Tooltip text="Coming soon"><button disabled className={btnOff}><ExternalLink size={16} /><span>Paper</span></button></Tooltip>}
+              {pub.paper === undefined ? null
+                : pub.paper === "placeholder"
+                  ? <Tooltip text="Coming soon"><button disabled className={btnOff}><ExternalLink size={16} /><span>Paper</span></button></Tooltip>
+                  : <a href={pub.paper} target="_blank" rel="noreferrer" className={btnRed}><ExternalLink size={16} /><span>Paper</span></a>}
 
-              {pub.code
-                ? <a href={pub.code} target="_blank" rel="noreferrer" className={btnBlack}><Code size={16} /><span>Code</span></a>
-                : <Tooltip text="Coming soon"><button disabled className={btnOff}><Code size={16} /><span>Code</span></button></Tooltip>}
+              {pub.code === undefined ? null
+                : pub.code === "placeholder"
+                  ? <Tooltip text="Coming soon"><button disabled className={btnOff}><Code size={16} /><span>Code</span></button></Tooltip>
+                  : <a href={pub.code} target="_blank" rel="noreferrer" className={btnBlack}><Code size={16} /><span>Code</span></a>}
 
-              {pub.supplementary
-                ? <a href={pub.supplementary} download className={btnBlue}><Download size={16} /><span>Supplementary</span></a>
-                : <Tooltip text="No supplementary material"><button disabled className={btnOff}><Download size={16} /><span>Supplementary</span></button></Tooltip>}
+              {pub.supplementary === undefined ? null
+                : pub.supplementary === "placeholder"
+                  ? <Tooltip text="Coming soon"><button disabled className={btnOff}><Download size={16} /><span>Supplementary</span></button></Tooltip>
+                  : <a href={pub.supplementary} download className={btnBlue}><Download size={16} /><span>Supplementary</span></a>}
             </div>
           </header>
 
