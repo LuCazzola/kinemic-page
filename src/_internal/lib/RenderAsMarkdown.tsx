@@ -48,7 +48,7 @@ function parseIndices(raw: string): (number | "placeholder")[] {
 const mimeFor = (src?: string) => { const e = src?.split("?")[0].split(".").pop()?.toLowerCase(); return e === "mp4" ? "video/mp4" : e === "webm" ? "video/webm" : e === "ogv" || e === "ogg" ? "video/ogg" : undefined; };
 const videoSources = (s?: string) => { if (!s) return [] as string[]; const [p, q] = s.split("?"); const e = p.split(".").pop()?.toLowerCase() ?? ""; const b = p.replace(/\.[^.]+$/, ""); const qs = q ? `?${q}` : ""; const c = [s]; if (e === "mp4") c.push(`${b}.webm${qs}`); else if (e === "webm") c.push(`${b}.mp4${qs}`); else { c.push(`${b}.mp4${qs}`); c.push(`${b}.webm${qs}`); } return [...new Set(c)]; };
 
-export default function RenderAsMarkdown(content: string, media: MediaItem[] = [], opts?: { math?: boolean }): React.ReactNode {
+export default function RenderAsMarkdown(content: string, media: MediaItem[] = [], opts?: { math?: boolean; mediaTitleFontSize?: number; mediaCaptionFontSize?: number }): React.ReactNode {
   if (!content) return null;
 
   const mdPlugins = [remarkGfm, ...(opts?.math ? [remarkMath] : [])];
@@ -104,10 +104,13 @@ export default function RenderAsMarkdown(content: string, media: MediaItem[] = [
   const resolve = (idx: number | "placeholder"): MediaItem | null =>
     idx === "placeholder" ? null : (media[idx as number] ?? null);
 
+  const titleFs   = opts?.mediaTitleFontSize   ?? 18;
+  const captionFs = opts?.mediaCaptionFontSize ?? 13;
+
   const renderItem = (it: MediaItem | null, key: React.Key) => {
-    if (!it) return <div key={key} style={{ color: "#999", fontSize: 13 }}>Missing media</div>;
-    const Title = it.title ? <div style={{ textAlign: "center", fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{it.title}</div> : null;
-    const Caption = it.caption ? <figcaption style={{ fontSize: 13, color: "#666", marginTop: 6 }}>{it.caption}</figcaption> : null;
+    if (!it) return <div key={key} style={{ color: "#999", fontSize: captionFs }}>Missing media</div>;
+    const Title = it.title ? <div style={{ textAlign: "center", fontSize: titleFs, fontWeight: 600, marginBottom: 8 }}>{it.title}</div> : null;
+    const Caption = it.caption ? <figcaption style={{ fontSize: captionFs, color: "#666", marginTop: 6 }}>{it.caption}</figcaption> : null;
     if (it.type === "image") return <figure key={key} style={{ margin: 0 }}>{Title}<img src={it.src} alt={(it as any).alt ?? "media"} loading="lazy" style={{ width: "100%", borderRadius: 8, display: "block" }} />{Caption}</figure>;
     if (it.type === "video") return (
       <figure key={key} style={{ margin: 0 }}>{Title}

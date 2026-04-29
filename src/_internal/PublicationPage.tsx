@@ -181,7 +181,7 @@ const PublicationPage: React.FC<{ pub: Publication }> = ({ pub }) => {
             <>
               <ThreeBallSeparator />
               <section style={{ marginBottom: 48, fontSize: t.contentFontSize ?? 16 }}>
-                {RenderAsMarkdown(pub.content, media, { math: true })}
+                {RenderAsMarkdown(pub.content, media, { math: true, mediaTitleFontSize: t.mediaTitleFontSize, mediaCaptionFontSize: t.mediaCaptionFontSize })}
               </section>
             </>
           )}
@@ -191,11 +191,11 @@ const PublicationPage: React.FC<{ pub: Publication }> = ({ pub }) => {
 
       {/* ── footer ───────────────────────────────────────────────────────── */}
       <footer style={{ borderTop: "1px solid #e6e6e6", padding: "20px 28px", textAlign: "center", fontSize: 13, color: "#999" }}>
-        © {new Date().getFullYear()} Luca Cazzola. All rights reserved.
-        {" · "}
+        Built with{" "}
         <a href="https://github.com/LuCazzola/md-paper" target="_blank" rel="noopener noreferrer" style={{ color: "#999", textDecoration: "underline" }}>
-          md-paper template
+          md-paper
         </a>
+        {" — "}free to use, credit appreciated.
       </footer>
     </div>
   );

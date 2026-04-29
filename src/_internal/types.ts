@@ -17,6 +17,10 @@ export type Theme = {
   bodyFont?: string;
   /** Font family for headings (default "Patua One, serif"). */
   headingFont?: string;
+  /** Font size of media item titles in px (default 18). */
+  mediaTitleFontSize?: number;
+  /** Font size of media item captions in px (default 13). */
+  mediaCaptionFontSize?: number;
   /** Max width of the main content column in px (default 1200). */
   contentMaxWidth?: number;
   /** Background color of the page (default "#fff"). */
