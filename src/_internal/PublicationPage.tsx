@@ -30,11 +30,20 @@ const VideoEl: React.FC<{ src: string }> = ({ src }) => (
 
 // ─── button styles ────────────────────────────────────────────────────────────
 
-const btn: React.CSSProperties = { display: "inline-flex", alignItems: "center", gap: 8, borderRadius: 6, padding: "8px 12px", fontSize: 14, fontWeight: 500, textDecoration: "none", border: "none", cursor: "pointer" };
-const btnRed   = { ...btn, background: "#c0392b", color: "#fff" } as React.CSSProperties;
-const btnBlue  = { ...btn, background: "#0b69ff", color: "#fff" } as React.CSSProperties;
-const btnBlack = { ...btn, background: "#111",    color: "#fff" } as React.CSSProperties;
-const btnOff   = { ...btn, background: "transparent", color: "#999", border: "1px solid #ddd", opacity: 0.6, cursor: "not-allowed" } as React.CSSProperties;
+const BTN_CSS = `
+.pub-btn { display:inline-flex;align-items:center;gap:8px;border-radius:6px;padding:8px 12px;font-size:14px;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:filter 150ms ease,transform 150ms ease; }
+.pub-btn:hover  { filter:brightness(1.15);transform:translateY(-1px); }
+.pub-btn:active { filter:brightness(0.92);transform:translateY(0); }
+.pub-btn-red   { background:#c0392b;color:#fff; }
+.pub-btn-blue  { background:#0b69ff;color:#fff; }
+.pub-btn-black { background:#111;color:#fff; }
+.pub-btn-off   { background:transparent;color:#999;border:1px solid #ddd;opacity:0.6;cursor:not-allowed;pointer-events:none; }
+`;
+
+const btnRed   = "pub-btn pub-btn-red";
+const btnBlue  = "pub-btn pub-btn-blue";
+const btnBlack = "pub-btn pub-btn-black";
+const btnOff   = "pub-btn pub-btn-off";
 
 // ─── component ────────────────────────────────────────────────────────────────
 
@@ -76,6 +85,7 @@ const PublicationPage: React.FC<{ pub: Publication }> = ({ pub }) => {
 
   return (
     <div style={{ background: pageBg, color: "#111", minHeight: "100vh", fontFamily: bodyFont, fontSize: baseFontSize }}>
+      <style>{BTN_CSS}</style>
 
       {/* ── top bar ────────────────────────────────────────────────────────── */}
       <div style={{ borderBottom: "1px solid #e6e6e6" }}>
@@ -109,20 +119,20 @@ const PublicationPage: React.FC<{ pub: Publication }> = ({ pub }) => {
             {/* buttons */}
             <div style={{ marginTop: 16, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               {pub.pdf
-                ? <a href={pub.pdf} download style={btnBlue}><FileText size={16} /><span>Paper (PDF)</span></a>
+                ? <a href={pub.pdf} download className={btnBlue}><FileText size={16} /><span>Paper (PDF)</span></a>
                 : null}
 
               {pub.paper
-                ? <a href={pub.paper} target="_blank" rel="noreferrer" style={btnRed}><ExternalLink size={16} /><span>Paper</span></a>
-                : <Tooltip text="Coming soon"><button disabled style={btnOff}><ExternalLink size={16} /><span>Paper</span></button></Tooltip>}
+                ? <a href={pub.paper} target="_blank" rel="noreferrer" className={btnRed}><ExternalLink size={16} /><span>Paper</span></a>
+                : <Tooltip text="Coming soon"><button disabled className={btnOff}><ExternalLink size={16} /><span>Paper</span></button></Tooltip>}
 
               {pub.code
-                ? <a href={pub.code} target="_blank" rel="noreferrer" style={btnBlack}><Code size={16} /><span>Code</span></a>
-                : <Tooltip text="Coming soon"><button disabled style={btnOff}><Code size={16} /><span>Code</span></button></Tooltip>}
+                ? <a href={pub.code} target="_blank" rel="noreferrer" className={btnBlack}><Code size={16} /><span>Code</span></a>
+                : <Tooltip text="Coming soon"><button disabled className={btnOff}><Code size={16} /><span>Code</span></button></Tooltip>}
 
               {pub.supplementary
-                ? <a href={pub.supplementary} download style={btnBlue}><Download size={16} /><span>Supplementary</span></a>
-                : <Tooltip text="No supplementary material"><button disabled style={btnOff}><Download size={16} /><span>Supplementary</span></button></Tooltip>}
+                ? <a href={pub.supplementary} download className={btnBlue}><Download size={16} /><span>Supplementary</span></a>
+                : <Tooltip text="No supplementary material"><button disabled className={btnOff}><Download size={16} /><span>Supplementary</span></button></Tooltip>}
             </div>
           </header>
 
