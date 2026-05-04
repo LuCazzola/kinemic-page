@@ -33,14 +33,14 @@ const publication: Publication = {
 
   paper:         "https://arxiv.org/abs/2512.11654",
   pdf:           undefined,
-  code:          COMING_SOON,
+  code:          "https://github.com/LuCazzola/KineMIC",
   supplementary: "/resources/pubs/kinemic_supplementary_material.zip",
 
   siteUrl: "https://lucazzola.github.io/",
 
   teaserIndex: 1,
 
-  abstract: "The acquisition cost for large, annotated motion datasets remains a critical bottleneck for skeletal-based Human Activity Recognition (HAR). Although Text-to-Motion (T2M) generative models offer a compelling, scalable source of synthetic data, their training objectives, which emphasize general artistic motion, and dataset structures fundamentally differ from HAR's requirements for kinematically precise, class-discriminative actions. This disparity creates a significant domain gap, making generalist T2M models ill-equipped for generating motions suitable for HAR classifiers. To address this challenge, we propose KineMIC (Kinetic Mining In Context), a transfer learning framework for few-shot action synthesis. KineMIC adapts a T2M diffusion model to an HAR domain by hypothesizing that semantic correspondences in the text encoding space can provide soft supervision for kinematic distillation. We operationalize this via a kinetic mining strategy that leverages CLIP text embeddings to establish correspondences between sparse HAR labels and T2M source data. This process guides fine-tuning, transforming the generalist T2M backbone into a specialized few-shot Action-to-Motion generator. We validate KineMIC using HumanML3D as the source T2M dataset and a subset of NTU RGB+D 120 as the target HAR domain, randomly selecting just 10 samples per action class for training. Our approach generates significantly more coherent motions, providing a robust data augmentation source that delivers a +23.1% accuracy points improvement.",
+  abstract: "The acquisition cost for large, annotated motion datasets is a bottleneck for skeletal-based Human Activity Recognition (HAR). While Text-to-Motion (T2M) models offer a compelling, scalable source of synthetic data, their training objectives, which emphasize general artistic motion, and dataset structures fundamentally differ from HAR’s requirements for kinematically precise, class discriminative actions. We propose KineMIC (Kinetic Mining In Context), a transfer learning framework for few-shot action synthesis. KineMIC adapts a T2M diffusion model to an HAR domain by hypothesizing that semantic correspondences in the text encoding space can provide soft supervision for kinematic distillation. Our solution leverages CLIP text embeddings to mine relevant motion from the source data, guiding the fine-tuning of a generalist backbone into a specialized Action-to-Motion generator. Validated on a subset of NTU RGB+D 120 using only 10 samples per class and considering HumanML3D as source T2M dataset, KineMIC generates coherent motions that provide robust synthetic data, delivering a +23.1% improvement in action recognition accuracy.",
 
   media: [
     // 1 — teaser overview image
